@@ -2,6 +2,10 @@ import { useState } from "react";
 import Notes from "./NotesAPI";
 import "./App.css";
 function App() {
+  const allNotes = Notes.getAllNotes();
+
+  const [numberOfNotes, setNumberOfNotes] = useState(0);
+
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   function handleclick(noteTitle, noteDesc) {
@@ -42,6 +46,18 @@ function App() {
       </div>
       <div className="note-container">
         <p>No Notes has already been added!</p>
+        {allNotes.map((item) => {
+          return (
+            <div className="note-item" key={item.id}>
+              <div className="note-item__header">
+                <span className="title">{item.title}</span>
+                <span className="action "></span>
+                <span className="trash"></span>
+                <span className="desc">{item.description}</span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
