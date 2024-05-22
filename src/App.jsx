@@ -1,63 +1,20 @@
 import { useState } from "react";
-import Notes from "./NotesAPI";
+import AddNewNote from "./components/AddNewNote.jsx";
+import NoteList from "./components/NoteList.jsx";
 import "./App.css";
 function App() {
-  const allNotes = Notes.getAllNotes();
-
-  const [numberOfNotes, setNumberOfNotes] = useState(0);
-
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  function handleclick(noteTitle, noteDesc) {
-    const note = {
-      title: noteTitle,
-      description: noteDesc,
-    };
-    Notes.SaveNote(note);
-    setDesc("");
-    setTitle("");
-  }
+  const [notes, setNotes] = useState([]);
+  const handleAddNote = (newNote) => {
+    setNotes((prevNotes) => [...prevNotes, newNote]);
+  };
   return (
-    <div className="note-app">
-      <div className="note-form">
-        <h3>Add New Note</h3>
-        <input
-          className="text-field"
-          type="text"
-          placeholder="Note Title..."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          className="text-field"
-          type="text"
-          placeholder="Note Description..."
-          value={desc}
-          onChange={(e) => {
-            setDesc(e.target.value);
-          }}
-        />
-        <button
-          className="btn btn--primary"
-          onClick={() => handleclick(title, desc)}
-        >
-          Add New Note
-        </button>
-      </div>
-      <div className="note-container">
-        <p>No Notes has already been added!</p>
-        {allNotes.map((item) => {
-          return (
-            <div className="note-item" key={item.id}>
-              <div className="note-item__header">
-                <span className="title">{item.title}</span>
-                <span className="action "></span>
-                <span className="trash"></span>
-                <span className="desc">{item.description}</span>
-              </div>
-            </div>
-          );
-        })}
+    <div className="container">
+      <div className="note-header"></div>
+      <div className="note-app">
+        <AddNewNote onAddNote={handleAddNote} />
+        <div className="note-container">
+          <NoteList notes={notes} />
+        </div>
       </div>
     </div>
   );
