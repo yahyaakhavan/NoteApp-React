@@ -10,7 +10,7 @@ function AddNewNote({ onAddNote }) {
       return;
     }
     const newNote = {
-      id: new Date().toISOString(),
+      id: new Date().getTime(),
       completed: false,
       Title,
       Desc,
