@@ -18,7 +18,7 @@ export default NoteList;
 function NoteItem({ note, onDelete, onCompletedNote }) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return (
-    <div className="note-item">
+    <div className={`note-item ${note.completed ? "completed" : ""}`}>
       <div className="note-item__header">
         <div>
           <p className="title">{note.Title}</p>
@@ -41,6 +41,7 @@ function NoteItem({ note, onDelete, onCompletedNote }) {
             type="checkbox"
             name=""
             id=""
+            checked={note.completed}
           />
         </div>
       </div>
