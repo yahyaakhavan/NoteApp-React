@@ -6,7 +6,7 @@ import NoteHeader from "./components/NoteHeader.jsx";
 import "./App.css";
 function App() {
   const [notes, setNotes] = useState([]);
-  const [sortNotes, setSortNotes] = useState([]);
+  const [sortBy, setSortBy] = useState("latest");
   const handleAddNote = (newNote) => {
     setNotes((prevNotes) => [...prevNotes, newNote]);
   };
@@ -30,36 +30,24 @@ function App() {
       });
     });
   };
-  const handleSort = (e) => {
+  const onSortBy = (e) => {
+    setSortBy(e.target.value);
     console.log(e.target.value);
-    console.log(notes);
-    setSortNotes(
-      notes.map((n) => {
-        return n;
-      })
-    );
-    setSortNotes(
-      sortNotes.sort((a, b) => {
-        if (new Date(a.createdAt) < new Date(b.createdAt)) {
-          return -1;
-        } else if (new Date(a.createdAt) > new Date(b.createdAt)) {
-          return 1;
-        }
-      })
-    );
-    console.log(sortNotes);
   };
+  let sortedNote = notes;
+
   return (
     <div className="container">
-      <NoteHeader notes={notes} onSort={handleSort} />
+      <NoteHeader notes={notes} sortBy={sortBy} onSortBy={onSortBy} />
       <div className="note-app">
         <AddNewNote onAddNote={handleAddNote} />
         <div className="note-container">
           <NoteStatus notes={notes} />
           <NoteList
-            notes={notes}
+            notes={sortedNote}
             onDeleteNote={handleDeleteNote}
             onCompleted={handleCompletedNote}
+            sortBy={sortBy}
           />
         </div>
       </div>

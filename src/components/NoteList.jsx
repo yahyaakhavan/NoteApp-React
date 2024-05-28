@@ -1,4 +1,19 @@
-function NoteList({ notes, onDeleteNote, onCompleted }) {
+function NoteList({ notes, onDeleteNote, onCompleted, sortBy }) {
+  if (sortBy == "latest") {
+    //DESC=>b-a
+    notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+  if (sortBy == "earliest") {
+    //Asc=>a-b
+    notes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  }
+  if (sortBy == "completed") {
+    notes.sort((a, b) => {
+      if (Number(a.completed) > Number(b.completed)) {
+        return -1;
+      }
+    });
+  }
   return (
     <div className="note-list">
       {notes.map((item) => {
