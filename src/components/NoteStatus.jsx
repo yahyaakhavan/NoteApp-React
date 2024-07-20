@@ -1,4 +1,7 @@
-function NoteStatus({ notes }) {
+import { useNotes } from "../context/NotesContext";
+
+function NoteStatus() {
+  const notes = useNotes();
   const allNotes = notes.length;
   const completed = (notes) => {
     let o = 0;

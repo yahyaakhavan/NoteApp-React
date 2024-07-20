@@ -1,4 +1,7 @@
-function NoteList({ notes, onDeleteNote, onCompleted, sortBy }) {
+import { useNotes, useNotesDispatch } from "../context/NotesContext";
+
+function NoteList({ sortBy }) {
+  const notes = useNotes();
   if (sortBy == "latest") {
     //DESC=>b-a
     notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -17,20 +20,14 @@ function NoteList({ notes, onDeleteNote, onCompleted, sortBy }) {
   return (
     <div className="note-list">
       {notes.map((item) => {
-        return (
-          <NoteItem
-            key={item.id}
-            note={item}
-            onDelete={onDeleteNote}
-            onCompletedNote={onCompleted}
-          />
-        );
+        return <NoteItem key={item.id} note={item} />;
       })}
     </div>
   );
 }
 export default NoteList;
-function NoteItem({ note, onDelete, onCompletedNote }) {
+function NoteItem({ note }) {
+  const dispatch = useNotesDispatch();
   const options = { year: "numeric", month: "long", day: "numeric" };
   return (
     <div className={`note-item ${note.completed ? "completed" : ""}`}>
@@ -43,15 +40,15 @@ function NoteItem({ note, onDelete, onCompletedNote }) {
           <button>
             <img
               onClick={(e) => {
-                onDelete(e);
+                dispatch({ type: "delete", payload: e.target.dataset.noteid });
               }}
               data-noteid={note.id}
               src="../../Img/Trash.png"
             ></img>
           </button>
           <input
-            onChange={(e) => {
-              onCompletedNote(e, note.id);
+            onChange={() => {
+              dispatch({ type: "sort", payload: note.id });
             }}
             type="checkbox"
             name=""
